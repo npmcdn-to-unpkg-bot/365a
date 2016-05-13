@@ -1,0 +1,62 @@
+<div class="row" ng-if="isadmin()||isSupervisor()">
+    <form>
+        <div class="form-group">
+            <label for="nome">Nome</label>
+            <input type="text" class="form-control" id="nome" placeholder="Nome" ng-model="module.Name">
+        </div>
+
+        <div class="form-group">
+            <label for="inputTitle">Descricao</label>
+            <input type="text" class="form-control" id="inputTitle" placeholder="Nome" ng-model="module.Description">
+        </div>
+
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="module.ExcludeClients"> Excluir Clientes
+            </label>
+        </div>
+
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="module.ExcludeWorkers"> Excluir Colaboradores
+            </label>
+        </div>
+
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="module.ExcludeAttach"> Excluir Anexos
+            </label>
+        </div>
+
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="module.ExcludeTitle"> Excluir Titulo
+            </label>
+        </div>
+
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="module.ExcludeDescription"> Excluir Descrição
+            </label>
+        </div>
+
+
+        <button type="submit" ng-click="addField()" class="btn btn-default">Adicionar Campo Extra</button>
+
+
+        <span ng-if="module.Fields[0]"> <h3>Campos Extra do Modulo {{module.Name}}</h3></span>
+
+        <div class="form-group"  ng-repeat="field in module.Fields">
+            <label for="desc">{{field.Name}}</label>
+            <input type="text" class="form-control" id="desc" placeholder="{{field.Name}}" ng-model="field.Name">
+
+            <a style="width: 100%;background-color: red" ng-really-message="Tem a certeza?"
+               ng-really-click="deleteField($index)"
+               class="btn btn-default glyphicon glyphicon-remove-circle"
+               aria-hidden="true"></a>
+        </div>
+
+
+        <button type="submit" ng-click="submit()" class="btn btn-default">Guardar</button>
+    </form>
+</div>

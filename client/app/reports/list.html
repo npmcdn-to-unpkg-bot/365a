@@ -1,0 +1,32 @@
+<h2>Listar Relatórios</h2>
+<div class="form-group">
+    <label for="inputTitle">Pesquisar</label>
+    <input type="text" class="form-control" id="inputTitle" placeholder="palavra a pesquisar" ng-change="search(searchKeyword)" ng-model="searchKeyword">
+</div>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Titulo</th>
+        <th>Cliente</th>
+        <th>Data</th>
+        <th  style="text-align: right">Opções</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="report in reports">
+        <td>{{report.Title}}</td>
+        <td><a ng-href="/static/#/clients/edit/{{report.Client.Id}}"> {{report.Client.Name}}</a></td>
+        <td>{{report.Created}}</td>
+
+        <td style="text-align: right"><a href="#/reports/edit/{{report.Id}}" class="btn btn-default glyphicon glyphicon-edit"
+               aria-hidden="true"></a><a ng-really-message="Tem a certeza?"
+                                         ng-really-click="delete(report.Id)"
+                                         class="btn btn-default glyphicon glyphicon-remove-circle"
+                                                 aria-hidden="true"></a>
+
+        </td>
+    </tr>
+    </tbody>
+</table>

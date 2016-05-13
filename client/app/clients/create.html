@@ -1,0 +1,13 @@
+<div class="row" ng-if="isadmin()||isSupervisor()">
+    <form>
+        <div class="form-group">
+            <label for="Nome">Nome</label>
+            <input type="text" class="form-control" id="Nome" placeholder="Nome" ng-model="client.Name">
+        </div>
+        <div class="form-group">
+            <label for="Nif">Nif</label>
+            <input type="text" class="form-control" id="Nif" placeholder="Nif" ng-model="client.Nif">
+        </div>
+        <button type="submit" ng-click="submit()" class="btn btn-default">Guardar</button>
+    </form>
+</div>

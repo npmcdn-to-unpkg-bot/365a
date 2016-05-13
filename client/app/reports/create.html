@@ -1,0 +1,93 @@
+<div class="row" >
+    <h2>Adicionar Relatório</h2>
+
+    <form>
+        <div class="form-group">
+            <label for="Titulo">Titulo</label>
+            <input type="text" class="form-control" id="Titulo" placeholder="Titulo" ng-model="report.Title" ng-required="required">
+        </div>
+        <div class="form-group">
+            <label for="Nif">Descrição</label>
+            <textarea rows="5" type="text"  class="form-control" id="Nif" placeholder="Descrição" ng-model="report.Description" ng-required="required"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="Nif">Cliente</label>
+            <ui-select ng-model="report.Client">
+                <ui-select-match>
+                    <span ng-bind="$select.selected.Name"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="item in (clients | filter: $select.search) track by item.Id">
+                    <span ng-bind="item.Name"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div class="form-group">
+            <label for="Nif">Colaboradores</label>
+            <ui-select ng-model="report.Users" multiple>
+                <ui-select-match>
+                    <span ng-bind="$item.Name"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="item in (users | filter: $select.search) track by item.Id">
+                    <span ng-bind="item.Name"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <button type="submit" ng-click="addAttach()" class="btn btn-default">Adicionar Anexo</button>
+        <br>
+
+<span ng-if="report.Attachments[0]"> <h3>Anexos</h3></span>
+
+        <ul ng-repeat="attch in report.Attachments">
+            <li class="list-group-item">
+            <div class="form-group">
+                <label>Titulo</label>
+                <input type="text" class="form-control" placeholder="Titulo" ng-model="attch.Tags">
+            </div>
+
+            <div class="form-group">
+
+                 <span class="btn btn-default btn-file">
+                           Upload
+                <input type="file" id="exampleInputFile" ng-model="attch.File" base-sixty-four-input>
+                     </span>
+            </div>
+                <div ng-if="attch.File.ID">
+
+                <a href="/uploads/reports/{{attch.File.ID}}">{{attch.Tags}} <i class="glyphicon glyphicon-download"></i> </a>
+            </div>
+
+                        <a style="width: 100%;background-color: red" ng-really-message="Tem a certeza?"
+                           ng-really-click="deleteAttach($index)"
+                           class="btn btn-default glyphicon glyphicon-remove-circle"
+                           aria-hidden="true"></a>
+
+            </li>
+        </ul>
+      <button type="submit" ng-click="submit()" class="btn btn-default">Guardar</button>
+    </form>
+</div>
+<style>
+    li{
+        display:inline;
+    }
+    .btn-file {
+        position: relative;
+        overflow: hidden;
+    }
+    .btn-file input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+    }
+
+</style>

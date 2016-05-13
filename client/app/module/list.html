@@ -1,0 +1,39 @@
+<h2>Modulo {{schema.ModuleDesc.Name}}</h2>
+
+
+<div class="form-group">
+    <label for="inputTitle">Pesquisar</label>
+    <input type="text" class="form-control" id="inputTitle" placeholder="palavra a pesquisar" ng-change="search(searchKeyword)" ng-model="searchKeyword">
+</div>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th  ng-if="!schema.ModuleDesc.ExcludeTitle" >Titulo</th>
+        <th ng-if="!schema.ModuleDesc.ExcludeClients">Cliente</th>
+        <th ng-repeat="field in schema.ExtraFieldsHeader">{{field.Name}}</th>
+        <th>Data</th>
+
+
+        <th  style="text-align: right">Opções</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="module in modules">
+        <td  ng-if="!schema.ModuleDesc.ExcludeTitle" >{{module.Title}}</td>
+        <td ng-if="!schema.ModuleDesc.ExcludeClients"><a ng-href="/static/#/clients/edit/{{module.Client.Id}}"> {{module.Client.Name}}</a></td>
+        <td ng-repeat="field in module.ExtraFields">{{field.Value}}</td>
+        <td>{{module.Created}}</td>
+
+
+        <td style="text-align: right"><a href="#/module/{{module.ModuleInfo}}/edit/{{module.Id}}" class="btn btn-default glyphicon glyphicon-edit"
+               aria-hidden="true"></a><a ng-really-message="Tem a certeza?"
+                                         ng-really-click="delete(module.Id)"
+                                         class="btn btn-default glyphicon glyphicon-remove-circle"
+                                                 aria-hidden="true"></a>
+
+        </td>
+    </tr>
+    </tbody>
+</table>

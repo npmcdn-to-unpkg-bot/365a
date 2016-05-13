@@ -1,0 +1,27 @@
+
+
+
+<table class="table" ng-if="isadmin()||isSupervisor()">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Descrição</th>
+        <th  style="text-align: right">Opções</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="module in modules">
+        <td>{{module.Id}}</td>
+        <td>{{module.Name}}</td>
+        <td>{{module.Description}}</td>
+
+        <td  style="text-align: right"> <a href="#/modules/edit/{{module.Id}}" class="btn btn-default glyphicon glyphicon-edit"
+               aria-hidden="true"></a><a ng-really-message="Tem a certeza?"
+                                         ng-really-click="delete(module.Id)"
+                                         class="btn btn-default glyphicon glyphicon-remove-circle"
+                                         aria-hidden="true"></a></td>
+    </tr>
+    </tbody>
+</table>
