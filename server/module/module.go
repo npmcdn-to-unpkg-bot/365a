@@ -78,8 +78,12 @@ func getExtraFields(id int)([]Field,error){
 }
 
 func SaveUpload(upload *Base64Upload, dst string) error {
+	err:=os.MkdirAll(dst,0777)
+	if err != nil {
+		return err
+	}
 
-	log.Println(dst)
+
 	id := bson.NewObjectId().Hex()
 	ext := filepath.Ext(upload.Filename)
 	out, err := os.Create(filepath.Join(dst, id+ext))
