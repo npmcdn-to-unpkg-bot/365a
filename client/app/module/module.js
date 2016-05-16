@@ -100,6 +100,9 @@ angular.module('Module', ['ngRoute'])
 
     }])
     .controller('Createmodules', ['$scope', '$http', 'toastr','$routeParams', function ($scope, $http, toastr,$routeParams) {
+
+        $scope.update=false;
+
         var moduleid = $routeParams.moduleid;
         $scope.module = {};
         $scope.clients = [];
@@ -180,6 +183,7 @@ angular.module('Module', ['ngRoute'])
 
     }])
     .controller('Editmodules', ['$scope', '$http', '$routeParams', 'toastr', function ($scope, $http, $routeParams, toastr) {
+        $scope.update=true;
         var moduleid = $routeParams.moduleid;
         $scope.module = {};
         $scope.clients = [];

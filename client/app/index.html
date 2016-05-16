@@ -29,7 +29,7 @@
 
 <body>
 
-<nav class="navbar navbar-inverse navbar-fixed-top"  ng-controller="Modules" ng-cloak>
+<nav class="navbar navbar-inverse navbar-fixed-top" ng-controller="Modules" ng-cloak>
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
@@ -43,7 +43,7 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                             <li class="dropdown" ng-if="isadmin()||isSupervisor()">
+                <li class="dropdown" ng-if="isadmin()||isSupervisor()">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">Utilizadores<span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -51,9 +51,6 @@
                         <li><a href="#/users/list">Listar</a></li>
                     </ul>
                 </li>
-            </ul>
-
-            <ul class="nav navbar-nav">
                 <li class="dropdown" ng-if="isadmin()||isSupervisor()">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">Clients<span class="caret"></span></a>
@@ -62,12 +59,7 @@
                         <li><a href="#/clients/list">Listar</a></li>
                     </ul>
                 </li>
-
-
-            </ul>
-
-            <ul class="nav navbar-nav">
-                <li class="dropdown" >
+                <li class="dropdown" ng-if="isadmin()||isSupervisor()">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">Relatórios<span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -77,10 +69,7 @@
                 </li>
 
 
-            </ul>
-
-            <ul class="nav navbar-nav" ng-repeat="module in modules">
-                <li class="dropdown" >
+                <li class="dropdown nav " ng-repeat="module in modules">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">{{module.Name}}<span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -89,10 +78,11 @@
                     </ul>
                 </li>
 
-            </ul>
 
-            <ul class="nav navbar-nav">
-                <li class="dropdown" >
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown" ng-if="isadmin()">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">Modulos<span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -100,8 +90,14 @@
                         <li><a href="#/modules/list">Listar</a></li>
                     </ul>
                 </li>
-                <li><a href="#" ng-if="isLoggedIn()" ng-click="logout()">Logout</a></li>
+                <li  ng-if="isloggedf()">
+                    <a href="#" ng-click="logout()">Logout</a>
+                </li>
+
             </ul>
+
+
+
 
 
         </div><!--/.nav-collapse -->
@@ -142,10 +138,6 @@
 <script src="/static/libs/angular-datepicker.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.3.8/angular-strap.compat.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.3.8/angular-strap.tpl.min.js"></script>
-
-
-
-
 
 
 <script src="//npmcdn.com/angular-toastr/dist/angular-toastr.tpls.js"></script>

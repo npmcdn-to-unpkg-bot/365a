@@ -157,6 +157,7 @@ func AngularAuth(db *storm.DB) gin.HandlerFunc {
 		err := Auther(c, db)
 		if err != nil {
 			c.JSON(http.StatusUnauthorized, NewFailResponse(err))
+			c.Abort()
 			return
 		}
 	}
@@ -205,6 +206,7 @@ func AngularSignIn(coll *storm.DB, findUser FindUser, cPass ConvertPassword, exp
 		}
 	}
 }
+
 
 func Signer(c *gin.Context, db *storm.DB, findUser FindUser, convertPassword ConvertPassword, expireTime time.Duration) error {
 

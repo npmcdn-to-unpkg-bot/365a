@@ -16,7 +16,7 @@ type ModulePlugin struct {
 func NewModulePlugin(baseURL string, authenticator gin.HandlerFunc, db *storm.DB) *ModulePlugin {
 	stormdb = db
 	stormdb.Init(Module{})
-	stormdb.Init(ModuleDesc{})
+	stormdb.Init(ModuleConfig{})
 
 	return &ModulePlugin{
 		BaseUrl:          baseURL,

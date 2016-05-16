@@ -7,6 +7,7 @@
 <table class="table">
     <thead>
     <tr>
+        <th>ID</th>
         <th>Titulo</th>
         <th>Cliente</th>
         <th>Data</th>
@@ -16,9 +17,10 @@
     </thead>
     <tbody>
     <tr ng-repeat="report in reports">
+        <td>{{report.Id}}</td>
         <td>{{report.Title}}</td>
         <td><a ng-href="/static/#/clients/edit/{{report.Client.Id}}"> {{report.Client.Name}}</a></td>
-        <td>{{report.Created}}</td>
+        <td>{{prettydate(report.Created)}}</td>
 
         <td style="text-align: right"><a href="#/reports/edit/{{report.Id}}" class="btn btn-default glyphicon glyphicon-edit"
                aria-hidden="true"></a><a ng-really-message="Tem a certeza?"

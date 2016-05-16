@@ -1,4 +1,4 @@
-<h2>Modulo {{schema.ModuleDesc.Name}}</h2>
+<h2>Modulo {{schema.ModuleConfig.Name}}</h2>
 
 
 <div class="form-group">
@@ -9,8 +9,8 @@
 <table class="table">
     <thead>
     <tr>
-        <th  ng-if="!schema.ModuleDesc.ExcludeTitle" >Titulo</th>
-        <th ng-if="!schema.ModuleDesc.ExcludeClients">Cliente</th>
+        <th  ng-if="!schema.ModuleConfig.ExcludeTitle" >Titulo</th>
+        <th ng-if="!schema.ModuleConfig.ExcludeClients">Cliente</th>
         <th ng-repeat="field in schema.ExtraFieldsHeader">{{field.Name}}</th>
         <th>Data</th>
 
@@ -21,14 +21,14 @@
     </thead>
     <tbody>
     <tr ng-repeat="module in modules">
-        <td  ng-if="!schema.ModuleDesc.ExcludeTitle" >{{module.Title}}</td>
-        <td ng-if="!schema.ModuleDesc.ExcludeClients"><a ng-href="/static/#/clients/edit/{{module.Client.Id}}"> {{module.Client.Name}}</a></td>
+        <td  ng-if="!schema.ModuleConfig.ExcludeTitle" >{{module.Title}}</td>
+        <td ng-if="!schema.ModuleConfig.ExcludeClients"><a ng-href="/static/#/clients/edit/{{module.Client.Id}}"> {{module.Client.Name}}</a></td>
         <td ng-repeat="field in module.ExtraFields">{{field.Value}}</td>
-        <td>{{module.Created}}</td>
+        <td>{{prettydate(module.Created)}}</td>
 
 
-        <td style="text-align: right"><a href="#/module/{{module.ModuleInfo}}/edit/{{module.Id}}" class="btn btn-default glyphicon glyphicon-edit"
-               aria-hidden="true"></a><a ng-really-message="Tem a certeza?"
+        <td style="text-align: right"><a href="#/module/{{module.ModuleConfig.Id}}/edit/{{module.Id}}" class="btn btn-default glyphicon glyphicon-edit"
+               aria-hidden="true"></a><a  ng-if="isadmin()" ng-really-message="Tem a certeza?"
                                          ng-really-click="delete(module.Id)"
                                          class="btn btn-default glyphicon glyphicon-remove-circle"
                                                  aria-hidden="true"></a>

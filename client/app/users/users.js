@@ -95,6 +95,7 @@ angular.module('Users', ['ngRoute'])
 
     }])
     .controller('CreateUsers', ['$scope', '$http', 'toastr', function ($scope, $http, toastr) {
+        $scope.update=false;
         $scope.user = {};
         $scope.user.Role=2;
 
@@ -117,7 +118,7 @@ angular.module('Users', ['ngRoute'])
 
     }])
     .controller('EditUsers', ['$scope', '$http', '$routeParams', 'toastr', function ($scope, $http, $routeParams, toastr) {
-
+        $scope.update=true;
         var user = localStorage.getItem("user");
 
             $scope.current=JSON.parse(user).Data

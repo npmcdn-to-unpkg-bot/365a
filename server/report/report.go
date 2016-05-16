@@ -213,15 +213,19 @@ func (ReportController) Delete(c *gin.Context) {
 }
 
 func (ReportController) ListAll(c *gin.Context) {
-	var publishers []Report
+	var reports []Report
 
-	err := stormdb.All(&publishers)
+	err := stormdb.All(&reports)
 	if err != nil {
 		c.JSON(500, err)
 		return
 	}
 
-	c.JSON(http.StatusOK, publishers)
+	for i, j := 0, len(reports)-1; i < j; i, j = i+1, j-1 {
+		reports[i], reports[j] = reports[j], reports[i]
+	}
+
+	c.JSON(http.StatusOK, reports)
 }
 
 func (ReportController) Search(c *gin.Context) {

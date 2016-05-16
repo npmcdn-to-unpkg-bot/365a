@@ -235,6 +235,12 @@ func (UserController) Delete(c *gin.Context) {
 	}
 }
 
+/*
+func MustGetUserRole(c *gin.Context) UserRole {
+return UserAdmin
+}
+*/
+
 func (UserController) ListAll(c *gin.Context) {
 	var publishers []User
 
@@ -242,6 +248,10 @@ func (UserController) ListAll(c *gin.Context) {
 	if err != nil {
 		c.JSON(500, err)
 		return
+	}
+
+	for i, j := 0, len(publishers)-1; i < j; i, j = i+1, j-1 {
+		publishers[i], publishers[j] = publishers[j], publishers[i]
 	}
 
 	c.JSON(http.StatusOK, publishers)
@@ -296,8 +306,4 @@ func addDefaultPub() error {
 
 }
 
-func init() {
 
-	//log.Println(AddDefaultPub())
-
-}

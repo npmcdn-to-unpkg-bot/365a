@@ -27,7 +27,7 @@ angular.module('myApp.Auth', ['ngRoute'])
                 // when the response is available
             }, function errorCallback(response) {
                 console.log(response)
-                toastr.error('Erro!', response.data);
+                //toastr.error('Erro!', response.data);
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
             });

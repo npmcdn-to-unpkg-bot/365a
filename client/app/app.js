@@ -41,8 +41,9 @@ window.issuper = function() {
     }
 };
 window.isloggedin = function() {
-
+    console.log("dass");
     var user = localStorage.getItem("user");
+    console.log(user);
     if (user) {
         return true;
     }
@@ -114,14 +115,28 @@ angular.module('myApp', ['ngRoute', 'Module','Users','Modules','Clients','report
     $rootScope.isadmin = window.isAdmin;
     $rootScope.isSupervisor = window.isSupervisor;
     $rootScope.isColaborator = window.isColaborator;
+    $rootScope.isloggedIn = window.isloggedin;
+    $rootScope.prettydate=function (d) {
+        return new Date(d).toLocaleString();
+
+    }
+    $rootScope.islogged = function() {
+        console.log("dass");
+        var user = localStorage.getItem("user");
+        console.log(user);
+        if (user) {
+            return true;
+        }
+        return false;
+    };
     $rootScope.logout = function() {
         angular.forEach($cookies, function(v, k) {
             $cookieStore.remove(k);
         });
         localStorage.removeItem("user")
         $location.path("/auth/login")
-    }
-    $rootScope.isLoggedIn = window.isloggedin
+    };
+
 }).filter('num', function() {
     return function(input) {
         return parseInt(input, 10);
@@ -149,6 +164,14 @@ angular.module('myApp', ['ngRoute', 'Module','Users','Modules','Clients','report
     };
 }).controller('Modules', ['$scope', '$http', 'toastr', function ($scope, $http, toastr) {
     $scope.modules = [];
+    $scope.isloggedf=function() {
+
+        var user = localStorage.getItem("user");
+        if (user) {
+            return true;
+        }
+        return false;
+    };
 
     $scope.$root.$on("updatemenu", function (event, args) {
       update()
@@ -170,7 +193,11 @@ angular.module('myApp', ['ngRoute', 'Module','Users','Modules','Clients','report
             // or server returns response with an error status.
         });
     };
-    update()
+
+    if (window.isloggedin()){
+        update()
+    }
+
 
 
 }])

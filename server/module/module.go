@@ -19,7 +19,17 @@ import (
 	"github.com/thesyncim/365/server/user"
 	"gopkg.in/mgo.v2/bson"
 	"strconv"
-	"github.com/asdine/storm"
+	//"github.com/asdine/storm"
+)
+
+type FieldType int
+
+const (
+	FieldText FieldType = iota
+	FieldNumer
+
+
+
 )
 type Field struct{
 	Name string
@@ -27,7 +37,7 @@ type Field struct{
 }
 
 //TODO do not edit after any created
-type ModuleDesc struct {
+type ModuleConfig struct {
 	Id int `storm:"id"`
 	Name string  `storm:"unique"`
 	Description string
@@ -41,8 +51,6 @@ type ModuleDesc struct {
 
 type Module struct {
 	Id          int `storm:"id"`
-	ModuleInfo  int `storm:"index"`
-	ModuleName string
 	Title       string `storm:"index"`
 	Description string
 	CreatedBy   int
@@ -54,9 +62,7 @@ type Module struct {
 		Tags string
 		File *Base64Upload
 	}
-	ModuleDesc *ModuleDesc
-
-
+	ModuleConfig *ModuleConfig `storm:"index"`
 	ExtraFields []Field
 	ExtraFieldsHeader []Field
 	Created time.Time `storm:"index"`
@@ -72,7 +78,7 @@ type Base64Upload struct {
 
 
 func getExtraFields(id int)([]Field,error){
-	var moduleInfo ModuleDesc
+	var moduleInfo ModuleConfig
 	err:=stormdb.One("Id",id,&moduleInfo)
 	return moduleInfo.Fields,err
 }
@@ -139,12 +145,13 @@ func (ModuleController) Create(c *gin.Context) {
 		c.Error(fmt.Errorf("session not found"))
 		return
 	}
-	var moduleinfo ModuleDesc
-	stormdb.One("Id",moduleid,&moduleinfo)
-
-	p.ModuleInfo=moduleid
-	p.ModuleName=moduleinfo.Name
-	p.ModuleDesc=&moduleinfo
+	var moduleinfo ModuleConfig
+	err=stormdb.One("Id",moduleid,&moduleinfo)
+	if err != nil {
+		c.Error(err)
+		return
+	}
+	p.ModuleConfig=&moduleinfo
 	p.CreatedBy = sess.(user.Session).UserID
 	p.Created = time.Now()
 	p.Updated = p.Created
@@ -261,15 +268,19 @@ func (ModuleController) GetModuleSchema(c *gin.Context) {
 	}
 	var pub Module
 
-	var moduleinfo ModuleDesc
-	stormdb.One("Id",idstr,&moduleinfo)
+	var moduleinfo ModuleConfig
+	err=stormdb.One("Id",idstr,&moduleinfo)
+	if err != nil {
+		c.JSON(500, err)
+		return
+	}
 
 	fields,err:=getExtraFields(id)
 	if err != nil   {
 		c.JSON(500, err.Error())
 		return
 	}
-	pub.ModuleDesc=&moduleinfo
+	pub.ModuleConfig=&moduleinfo
 
 	pub.ExtraFieldsHeader=fields
 
@@ -277,7 +288,7 @@ func (ModuleController) GetModuleSchema(c *gin.Context) {
 }
 
 func (ModuleController) CreateModule(c *gin.Context) {
-	var p = &ModuleDesc{}
+	var p = &ModuleConfig{}
 	err := c.BindJSON(p)
 	if err != nil {
 		c.Error(err)
@@ -294,7 +305,7 @@ func (ModuleController) CreateModule(c *gin.Context) {
 func (ModuleController) EditModule(c *gin.Context) {
 
 
-	var p ModuleDesc
+	var p ModuleConfig
 	err := c.BindJSON(&p)
 	if err != nil {
 		if err != nil {
@@ -320,7 +331,7 @@ func (ModuleController) DeleteModule(c *gin.Context) {
 		c.JSON(500, err)
 		return
 	}
-	p := ModuleDesc{Id: id}
+	p := ModuleConfig{Id: id}
 
 
 
@@ -343,7 +354,7 @@ func (ModuleController) GetIdModule(c *gin.Context) {
 		c.JSON(500, err)
 		return
 	}
-	var pub ModuleDesc
+	var pub ModuleConfig
 
 	err = stormdb.One("Id", id, &pub)
 	if err != nil {
@@ -355,12 +366,16 @@ func (ModuleController) GetIdModule(c *gin.Context) {
 }
 
 func (ModuleController) ListAllModule(c *gin.Context) {
-	var moduleEntry []ModuleDesc
+	var moduleEntry []ModuleConfig
 
 	err := stormdb.All(&moduleEntry)
 	if err != nil {
 		c.JSON(500, err)
 		return
+	}
+
+	for i, j := 0, len(moduleEntry)-1; i < j; i, j = i+1, j-1 {
+		moduleEntry[i], moduleEntry[j] = moduleEntry[j], moduleEntry[i]
 	}
 
 	c.JSON(http.StatusOK, moduleEntry)
@@ -398,13 +413,16 @@ func (ModuleController) ListAll(c *gin.Context) {
 		return
 	}
 
-	err = stormdb.Find("ModuleInfo",moduleid,&moduleEntry)
-	if err != nil && err!=storm.ErrNotFound {
+	err = stormdb.Find("ModuleConfig",moduleid,&moduleEntry)
+	if err != nil {
 		log.Println(err)
 		c.JSON(500, err)
 		return
 	}
 
+	for i, j := 0, len(moduleEntry)-1; i < j; i, j = i+1, j-1 {
+		moduleEntry[i], moduleEntry[j] = moduleEntry[j], moduleEntry[i]
+	}
 	c.JSON(http.StatusOK, moduleEntry)
 }
 
@@ -430,20 +448,16 @@ func (ModuleController) Search(c *gin.Context) {
 
 		for k, v := c.First(); k != nil; k, v = c.Next() {
 			if strings.Contains(strings.ToLower(string(v)), strings.ToLower(keyword)) {
-
-
 				err := stormdb.Get("Module", k, &Module)
 				if err != nil {
 					log.Println(err)
 					continue
 				}
-				if Module.ModuleInfo!=moduleid{
+				if Module.ModuleConfig.Id!=moduleid{
 					continue
-
 				}
 				Modules = append(Modules, Module)
 			}
-
 		}
 
 		return nil

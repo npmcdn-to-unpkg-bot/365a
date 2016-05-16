@@ -1,19 +1,20 @@
 
 <div class="row">
-    <h2>Modulo {{schema.ModuleDesc.Name}}</h2>
+    <h2>Modulo {{schema.ModuleConfig.Name}}</h2>
     <form>
-        <div  ng-if="!schema.ModuleDesc.ExcludeTitle"  class="form-group">
+        <fieldset ng-disabled="update&&!isadmin()">
+        <div  ng-if="!schema.ModuleConfig.ExcludeTitle"  class="form-group">
             <label for="Titulo">Titulo</label>
             <input type="text" class="form-control" id="Titulo" placeholder="Titulo" ng-model="module.Title"
                    ng-required="required">
         </div>
 
-        <div  ng-if="!schema.ModuleDesc.ExcludeDescription"  class="form-group">
+        <div  ng-if="!schema.ModuleConfig.ExcludeDescription"  class="form-group">
             <label for="Descricao">Descrição</label>
             <textarea rows="5" type="text" class="form-control" id="Descricao" placeholder="Descrição"
                       ng-model="module.Description" ng-required="required"></textarea>
         </div>
-        <div class="form-group" ng-if="!schema.ModuleDesc.ExcludeClients">
+        <div class="form-group" ng-if="!schema.ModuleConfig.ExcludeClients">
             <label>Cliente</label>
             <ui-select ng-model="module.Client">
                 <ui-select-match>
@@ -24,7 +25,7 @@
                 </ui-select-choices>
             </ui-select>
         </div>
-        <div class="form-group" ng-if="!schema.ModuleDesc.ExcludeWorkers">
+        <div class="form-group" ng-if="!schema.ModuleConfig.ExcludeWorkers">
             <label>Colaboradores</label>
             <ui-select ng-model="module.Users" multiple>
                 <ui-select-match>
@@ -40,12 +41,12 @@
             <input type="text" class="form-control" id="{{field.Name}}" placeholder="{{field.Name}}"
                    ng-model="module.ExtraFields[$index].Value"/>
         </div>
-        <button  ng-if="!schema.ModuleDesc.ExcludeAttach" type="submit" ng-click="addAttach()" class="btn btn-default">Adicionar Anexo</button>
+        <button  ng-if="!schema.ModuleConfig.ExcludeAttach" type="submit" ng-click="addAttach()" class="btn btn-default">Adicionar Anexo</button>
         <br>
 
         <span ng-if="module.Attachments[0]"> <h3>Anexos</h3></span>
 
-        <ul ng-if="!schema.ModuleDesc.ExcludeAttach" ng-repeat="attch in module.Attachments">
+        <ul ng-if="!schema.ModuleConfig.ExcludeAttach" ng-repeat="attch in module.Attachments">
             <li class="list-group-item">
                 <div class="form-group">
                     <label>Titulo</label>
@@ -61,7 +62,7 @@
                 </div>
                 <div ng-if="attch.File.ID">
 
-                    <a href="/uploads/modules/{{module.ModuleInfo}}/{{attch.File.ID}}">{{attch.Tags}} <i
+                    <a href="/uploads/modules/{{module.ModuleConfig.Id}}/{{attch.File.ID}}">{{attch.Tags}} <i
                             class="glyphicon glyphicon-download"></i> </a>
                 </div>
 
@@ -73,6 +74,7 @@
             </li>
         </ul>
         <button type="submit" ng-click="submit()" class="btn btn-default">Guardar</button>
+            </fieldset>
     </form>
 </div>
 <style>
