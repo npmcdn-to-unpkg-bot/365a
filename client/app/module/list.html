@@ -9,6 +9,7 @@
 <table class="table">
     <thead>
     <tr>
+        <th>Id</th>
         <th  ng-if="!schema.ModuleConfig.ExcludeTitle" >Titulo</th>
         <th ng-if="!schema.ModuleConfig.ExcludeClients">Cliente</th>
         <th ng-repeat="field in schema.ExtraFieldsHeader">{{field.Name}}</th>
@@ -21,12 +22,11 @@
     </thead>
     <tbody>
     <tr ng-repeat="module in modules">
+        <td>{{module.Id}}</td>
         <td  ng-if="!schema.ModuleConfig.ExcludeTitle" >{{module.Title}}</td>
         <td ng-if="!schema.ModuleConfig.ExcludeClients"><a ng-href="/static/#/clients/edit/{{module.Client.Id}}"> {{module.Client.Name}}</a></td>
         <td ng-repeat="field in module.ExtraFields">{{field.Value}}</td>
         <td>{{prettydate(module.Created)}}</td>
-
-
         <td style="text-align: right"><a href="#/module/{{module.ModuleConfig.Id}}/edit/{{module.Id}}" class="btn btn-default glyphicon glyphicon-edit"
                aria-hidden="true"></a><a  ng-if="isadmin()" ng-really-message="Tem a certeza?"
                                          ng-really-click="delete(module.Id)"

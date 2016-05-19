@@ -30,6 +30,12 @@ angular.module('Module', ['ngRoute'])
                 return
 
             }
+
+            if (keywords.indexOf(suffix, keywords.length - suffix.length) !== -1){
+                return
+            }
+
+
             $http({
                 method: 'GET',
                 url: window.hostname + 'modules/search/'+moduleid+'/'+keywords
